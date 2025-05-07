@@ -14,8 +14,9 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Middleware to parse JSON
-app.use(express.json());
+// Middleware to parse JSON and urlencoded data with size limits
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static('uploads'));

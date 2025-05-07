@@ -47,29 +47,32 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Ensure uploads directory exists
 const fs = require('fs');
 const uploadsDir = 'uploads';
 
-// Ensure uploads directory exists
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
 // Optional: POST /api/movies/upload - Upload video file
 router.post('/upload', (req, res) => {
+  console.log('Upload request received');
   upload.single('video')(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
+      console.error('Multer error:', err);
       return res.status(500).json({ error: 'Multer uploading error: ' + err.message });
     } else if (err) {
-      // An unknown error occurred when uploading.
+      console.error('Unknown error:', err);
       return res.status(500).json({ error: 'Unknown uploading error: ' + err.message });
     }
 
     if (!req.file) {
+      console.log('No file uploaded');
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
+    console.log('File uploaded:', req.file.filename);
     res.json({ message: 'File uploaded successfully', filename: req.file.filename, path: req.file.path });
   });
 });
