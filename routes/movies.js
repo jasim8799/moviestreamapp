@@ -55,9 +55,6 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-const Movie = require('../models/Movie');
-
-// Optional: POST /api/movies/upload - Upload video file and create movie
 router.post('/upload', (req, res) => {
   console.log('Upload request received');
   upload.single('video')(req, res, async function (err) {
