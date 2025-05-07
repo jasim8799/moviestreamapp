@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
   try {
     const movie = new Movie(req.body);
     const savedMovie = await movie.save();
-    res.status(201).json(savedMovie);
+    res.status(201).json({ message: 'Movie saved successfully', movieId: savedMovie._id });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
