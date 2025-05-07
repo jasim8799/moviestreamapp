@@ -1,0 +1,3 @@
+This is a placeholder file to simulate a video upload in Postman.
+Rename this file to sample-video.mp4 when uploading.
+Note: This is not an actual video file, but can be used to test the upload endpoint.

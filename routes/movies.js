@@ -55,10 +55,12 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-// Optional: POST /api/movies/upload - Upload video file
+const Movie = require('../models/Movie');
+
+// Optional: POST /api/movies/upload - Upload video file and create movie
 router.post('/upload', (req, res) => {
   console.log('Upload request received');
-  upload.single('video')(req, res, function (err) {
+  upload.single('video')(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       console.error('Multer error:', err);
       return res.status(500).json({ error: 'Multer uploading error: ' + err.message });
@@ -73,7 +75,23 @@ router.post('/upload', (req, res) => {
     }
 
     console.log('File uploaded:', req.file.filename);
-    res.json({ message: 'File uploaded successfully', filename: req.file.filename, path: req.file.path });
+
+    // Create a new movie document with placeholder values and videoUrl set to uploaded file path
+    try {
+      const newMovie = new Movie({
+        title: req.body.title || 'Untitled',
+        category: req.body.category || 'Uncategorized',
+        releaseDate: req.body.releaseDate || new Date(),
+        videoUrl: '/uploads/' + req.file.filename,
+        description: req.body.description || '',
+        tmdbId: req.body.tmdbId || '',
+      });
+      const savedMovie = await newMovie.save();
+      res.status(201).json({ message: 'File uploaded and movie created successfully', movie: savedMovie });
+    } catch (saveError) {
+      console.error('Error saving movie:', saveError);
+      res.status(500).json({ error: 'File uploaded but failed to save movie: ' + saveError.message });
+    }
   });
 });
 
