@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000; // Changed port to 3000
 app.use(express.json());
 
 // Connect to MongoDB Atlas
-const mongoURI = 'mongodb+srv://mdjasimm107:rsCioL4KMPdSISS0@movipro.cziuwhh.mongodb.net/';
+const mongoURI = 'mongodb+srv://mdjasimm107:FDyWNaaSgIiAXjyv@cluster0.3fqmmrz.mongodb.net/';
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
