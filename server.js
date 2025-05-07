@@ -14,6 +14,11 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
+// Explicitly handle OPTIONS preflight requests
+app.options('*', (req, res) => {
+  res.sendStatus(204);
+});
+
 // Middleware to parse JSON and urlencoded data with size limits
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
